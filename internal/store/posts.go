@@ -159,12 +159,12 @@ func (s *PostsStore) DeleteById(ctx context.Context, id int64) error {
 
 	result, err := s.db.ExecContext(ctx, query, id)
 	if err != nil {
-		return DeleteError
+		return ErrDelete
 	}
 
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return NotRowEffectedError
+		return ErrNotRowEffected
 	}
 
 	if rowsAffected == 0 {

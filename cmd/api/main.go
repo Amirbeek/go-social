@@ -12,9 +12,7 @@ import (
 	"github.com/amirbeek/social/internal/ratelimiter"
 	store2 "github.com/amirbeek/social/internal/store"
 	"github.com/amirbeek/social/internal/store/cache"
-	cache2 "github.com/amirbeek/social/internal/store/cache"
 	"github.com/go-redis/redis/v8"
-	_ "github.com/go-redis/redis/v8"
 
 	"go.uber.org/zap"
 )
@@ -118,7 +116,7 @@ func main() {
 	// Cache
 	var rdb *redis.Client
 	if cfg.redisConfig.enabled {
-		rdb = cache2.NewRedisClient(cfg.redisConfig.addr, cfg.redisConfig.pw, cfg.redisConfig.db) // <-- FIXED (rdb = not :=)
+		rdb = cache.NewRedisClient(cfg.redisConfig.addr, cfg.redisConfig.pw, cfg.redisConfig.db)
 		logger.Info("Redis connection pool established")
 	}
 

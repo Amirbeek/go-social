@@ -183,6 +183,10 @@ func (app *application) createTokenHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	token, err := app.authenticator.GenerateToken(claims)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
 
 	// send it to the client
 	if err := app.jsonResponse(w, http.StatusCreated, token); err != nil {

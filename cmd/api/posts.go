@@ -134,10 +134,10 @@ func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request
 		case errors.Is(err, store.ErrNotFound):
 			app.notFoundResponse(w, r, err)
 
-		case errors.Is(err, store.NotRowEffectedError):
+		case errors.Is(err, store.ErrNotRowEffected):
 			app.notFoundResponse(w, r, err)
 
-		case errors.Is(err, store.DeleteError):
+		case errors.Is(err, store.ErrDelete):
 			app.notFoundResponse(w, r, err)
 
 		default:

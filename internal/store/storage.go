@@ -9,8 +9,8 @@ import (
 
 var (
 	ErrNotFound          = errors.New("record not found")
-	NotRowEffectedError  = errors.New("error rows affected")
-	DeleteError          = errors.New("error deleting record")
+	ErrNotRowEffected    = errors.New("error rows affected")
+	ErrDelete            = errors.New("error deleting record")
 	ErrEditConflict      = errors.New("edit conflict")
 	QueryTimeOutDuration = time.Second * 5
 )

@@ -15,7 +15,6 @@ import (
 func Seed(store store.Storage, db *sql.DB) {
 	ctx := context.Background()
 
-	rand.Seed(time.Now().UnixNano())
 	tx, _ := db.BeginTx(ctx, nil)
 
 	users := generateUsers(100)
@@ -71,12 +70,13 @@ func Seed(store store.Storage, db *sql.DB) {
 
 func generateComments(count int, users []store.User, posts []store.Post) []*store.Comment {
 	commentsList := make([]*store.Comment, count)
+	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	for i := 0; i < count; i++ {
 		commentsList[i] = &store.Comment{
-			PostID:  posts[rand.Intn(len(posts))].ID,
-			UserID:  int64(users[rand.Intn(len(users))].ID),
-			Content: comments[rand.Intn(len(comments))],
+			PostID:  posts[rng.Intn(len(posts))].ID,
+			UserID:  int64(users[rng.Intn(len(users))].ID),
+			Content: comments[rng.Intn(len(comments))],
 		}
 	}
 
@@ -100,17 +100,18 @@ func generateUsers(i int) []store.User {
 
 func generatePosts(count int, users []store.User) []store.Post {
 	posts := make([]store.Post, 0, count)
+	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	for i := 0; i < count; i++ {
-		user := users[rand.Intn(len(users))]
+		user := users[rng.Intn(len(users))]
 
 		post := store.Post{
 			UserId:    int64(user.ID),
-			Title:     fmt.Sprintf("%s #%d", titles[rand.Intn(len(titles))], i+1),
-			Content:   contents[rand.Intn(len(contents))],
+			Title:     fmt.Sprintf("%s #%d", titles[rng.Intn(len(titles))], i+1),
+			Content:   contents[rng.Intn(len(contents))],
 			Version:   1,
-			Tags:      tagPool[rand.Intn(len(tagPool))],
-			CreatedAt: time.Now().Add(-time.Duration(rand.Intn(1000)) * time.Hour),
+			Tags:      tagPool[rng.Intn(len(tagPool))],
+			CreatedAt: time.Now().Add(-time.Duration(rng.Intn(1000)) * time.Hour),
 		}
 
 		posts = append(posts, post)
